@@ -1,6 +1,8 @@
 import {useState, useEffect} from 'react'
+import Loader from 'react-loader-spinner'
 
 import RepositoryItem from '../RepositoryItem'
+import LanguageFilterItem from '../LanguageFilterItem'
 import './index.css'
 
 const languageFiltersData = [
@@ -29,10 +31,11 @@ const GithubPopularRepos = () => {
 
       const res = await fetch(url)
       const data = await res.json()
+
       if (res.ok === true) {
         setGitRepoList(data.popular_repos)
         setApiStatus(apiStatusInState.success)
-        console.log(data.popular_repos)
+        // console.log(data.popular_repos)
       } else {
         setApiStatus(apiStatusInState.failure)
       }
@@ -48,6 +51,82 @@ const GithubPopularRepos = () => {
     </ul>
   )
 
+  const getJavascriptGitRepos = async () => {
+    const filteredLaguageJavaScript = languageFiltersData.filter(
+      item => item.id === 'JAVASCRIPT',
+    )
+    const tabId = filteredLaguageJavaScript[0].id
+
+    const url = `https://apis.ccbp.in/popular-repos?language=${tabId}`
+    const res = await fetch(url)
+
+    const data = await res.json()
+    if (res.ok === true) {
+      setGitRepoList(data.popular_repos)
+      setApiStatus(apiStatusInState.success)
+      // console.log(data.popular_repos)
+    } else {
+      setApiStatus(apiStatusInState.failure)
+    }
+  }
+
+  const getRubyGitRepos = async () => {
+    const filteredLaguageJavaScript = languageFiltersData.filter(
+      item => item.id === 'RUBY',
+    )
+    const tabId = filteredLaguageJavaScript[0].id
+
+    const url = `https://apis.ccbp.in/popular-repos?language=${tabId}`
+    const res = await fetch(url)
+
+    const data = await res.json()
+    if (res.ok === true) {
+      setGitRepoList(data.popular_repos)
+      setApiStatus(apiStatusInState.success)
+      // console.log(data.popular_repos)
+    } else {
+      setApiStatus(apiStatusInState.failure)
+    }
+  }
+
+  const getJavaGitRepos = async () => {
+    const filteredLaguageJavaScript = languageFiltersData.filter(
+      item => item.id === 'JAVA',
+    )
+    const tabId = filteredLaguageJavaScript[0].id
+
+    const url = `https://apis.ccbp.in/popular-repos?language=${tabId}`
+    const res = await fetch(url)
+
+    const data = await res.json()
+    if (res.ok === true) {
+      setGitRepoList(data.popular_repos)
+      setApiStatus(apiStatusInState.success)
+      // console.log(data.popular_repos)
+    } else {
+      setApiStatus(apiStatusInState.failure)
+    }
+  }
+
+  const getCSSGitRepos = async () => {
+    const filteredLaguageJavaScript = languageFiltersData.filter(
+      item => item.id === 'CSS',
+    )
+    const tabId = filteredLaguageJavaScript[0].id
+
+    const url = `https://apis.ccbp.in/popular-repos?language=${tabId}`
+    const res = await fetch(url)
+
+    const data = await res.json()
+    if (res.ok === true) {
+      setGitRepoList(data.popular_repos)
+      setApiStatus(apiStatusInState.success)
+      // console.log(data.popular_repos)
+    } else {
+      setApiStatus(apiStatusInState.failure)
+    }
+  }
+
   return (
     <div className="react-app">
       <div className="github-app-container">
@@ -56,20 +135,42 @@ const GithubPopularRepos = () => {
           <button type="button" className="tab-buttons">
             All
           </button>
-          <button type="button" className="tab-buttons">
+          <button
+            type="button"
+            className="tab-buttons"
+            onClick={getJavascriptGitRepos}
+          >
             Javascript
           </button>
-          <button type="button" className="tab-buttons">
+          <button
+            type="button"
+            className="tab-buttons"
+            onClick={getRubyGitRepos}
+          >
             Ruby
           </button>
-          <button type="button" className="tab-buttons">
+          <button
+            type="button"
+            className="tab-buttons"
+            onClick={getJavaGitRepos}
+          >
             Java
           </button>
-          <button type="button" className="tab-buttons">
+          <button
+            type="button"
+            className="tab-buttons"
+            onClick={getCSSGitRepos}
+          >
             CSS
           </button>
         </div>
-        {getGithubRepos()}
+        {apiStatus === 'INPROGRESS' ? (
+          <div>
+            <Loader type="ThreeDots" color="#0284c7" width={80} height={80} />
+          </div>
+        ) : (
+          getGithubRepos()
+        )}
       </div>
     </div>
   )
